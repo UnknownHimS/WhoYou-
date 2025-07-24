@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pet Personality Analyzer</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f4f9;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    select, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+    }
+    #result {
+      margin-top: 30px;
+      font-size: 18px;
+      background: #e0e0e0;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🐾 What's Your Personality?</h1>
+  
+  <label>Pick your favorite pet:</label><br/>
+  <select id="pet">
+    <option value="">--Select--</option>
+    <option value="dog">Dog</option>
+    <option value="cat">Cat</option>
+  </select><br/>
+
+  <label>Pick your favorite drink:</label><br/>
+  <select id="drink">
+    <option value="">--Select--</option>
+    <option value="coffee">Coffee</option>
+    <option value="tea">Tea</option>
+    <option value="water">Water</option>
+    <option value="juice">Juice</option>
+  </select><br/>
+
+  <label>Pick your hobby:</label><br/>
+  <select id="hobby">
+    <option value="">--Select--</option>
+    <option value="reading">Reading</option>
+    <option value="gaming">Gaming</option>
+    <option value="sports">Sports</option>
+    <option value="drawing">Drawing</option>
+  </select><br/>
+
+  <button onclick="analyzePersonality()">Reveal Personality</button>
+
+  <div id="result"></div>
+
+  <script>
+    function analyzePersonality() {
+      const pet = document.getElementById("pet").value;
+      const drink = document.getElementById("drink").value;
+      const hobby = document.getElementById("hobby").value;
+
+      if (!pet || !drink || !hobby) {
+        document.getElementById("result").innerText = "Please select all options.";
+        return;
+      }
+
+      // Manual psychology-based logic
+      let personality = "";
+
+      if (pet === "dog" && drink === "coffee" && hobby === "sports") {
+        personality = "You're energetic, outgoing, and a natural leader!";
+      } else if (pet === "cat" && drink === "tea" && hobby === "reading") {
+        personality = "You're introspective, calm, and love deep thinking.";
+      } else if (pet === "dog" && hobby === "gaming") {
+        personality = "You're friendly and love connecting with people online.";
+      } else if (pet === "cat" && hobby === "drawing") {
+        personality = "You're creative, sensitive, and love expressing emotions.";
+      } else {
+        personality = "You have a unique blend of traits. You're balanced and adaptive.";
+      }
+
+      document.getElementById("result").innerText = personality;
+    }
+  </script>
+
+</body>
+</html>
