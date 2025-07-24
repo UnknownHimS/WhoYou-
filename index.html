@@ -3,96 +3,110 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pet Personality Analyzer</title>
-  <style>
+  <title>WhoYou - Find Out Who You Are</title>
+  <style type="text/css">
     body {
+      margin: 0;
+      padding: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: #f4f4f9;
+      background: #0d1117;
+      color: #f0f6fc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
       text-align: center;
-      padding: 20px;
     }
-    h1 {
-      color: #333;
+    .choices {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
     }
-    select, button {
-      padding: 10px;
-      margin: 10px;
-      font-size: 16px;
+    button {
+      padding: 15px 30px;
+      background: #161b22;
+      color: #f0f6fc;
+      border: 2px solid #30363d;
+      border-radius: 12px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    button:hover {
+      background-color: #238636;
     }
     #result {
-      margin-top: 30px;
-      font-size: 18px;
-      background: #e0e0e0;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
+      margin-top: 40px;
+      font-size: 22px;
     }
   </style>
 </head>
 <body>
-
-  <h1>🐾 What's Your Personality?</h1>
-  
-  <label>Pick your favorite pet:</label><br/>
-  <select id="pet">
-    <option value="">--Select--</option>
-    <option value="dog">Dog</option>
-    <option value="cat">Cat</option>
-  </select><br/>
-
-  <label>Pick your favorite drink:</label><br/>
-  <select id="drink">
-    <option value="">--Select--</option>
-    <option value="coffee">Coffee</option>
-    <option value="tea">Tea</option>
-    <option value="water">Water</option>
-    <option value="juice">Juice</option>
-  </select><br/>
-
-  <label>Pick your hobby:</label><br/>
-  <select id="hobby">
-    <option value="">--Select--</option>
-    <option value="reading">Reading</option>
-    <option value="gaming">Gaming</option>
-    <option value="sports">Sports</option>
-    <option value="drawing">Drawing</option>
-  </select><br/>
-
-  <button onclick="analyzePersonality()">Reveal Personality</button>
-
+  <h1 id="question">Pick a pet</h1>
+  <div class="choices" id="choices"></div>
   <div id="result"></div>
 
   <script>
-    function analyzePersonality() {
-      const pet = document.getElementById("pet").value;
-      const drink = document.getElementById("drink").value;
-      const hobby = document.getElementById("hobby").value;
-
-      if (!pet || !drink || !hobby) {
-        document.getElementById("result").innerText = "Please select all options.";
-        return;
+    const questions = [
+      {
+        q: "Pick a pet",
+        options: ["Dog", "Cat"]
+      },
+      {
+        q: "Choose a drink",
+        options: ["Coffee", "Tea", "Juice"]
+      },
+      {
+        q: "Your hobby",
+        options: ["Reading", "Gaming", "Sports"]
       }
+    ];
 
-      // Manual psychology-based logic
-      let personality = "";
+    const dataProfiles = {
+      "Dog|Coffee|Reading": "You’re logical and loyal. Calm but always alert.",
+      "Dog|Juice|Gaming": "Energetic and fun. You’re spontaneous but kind.",
+      "Cat|Tea|Reading": "You’re introspective, mysterious, and wise.",
+      "Cat|Coffee|Gaming": "Creative mind with fast reflexes. You act with instinct.",
+      "Dog|Tea|Sports": "You’re disciplined and social. A natural leader.",
+      "Cat|Juice|Sports": "You’re athletic, independent, and unpredictable."
+    };
 
-      if (pet === "dog" && drink === "coffee" && hobby === "sports") {
-        personality = "You're energetic, outgoing, and a natural leader!";
-      } else if (pet === "cat" && drink === "tea" && hobby === "reading") {
-        personality = "You're introspective, calm, and love deep thinking.";
-      } else if (pet === "dog" && hobby === "gaming") {
-        personality = "You're friendly and love connecting with people online.";
-      } else if (pet === "cat" && hobby === "drawing") {
-        personality = "You're creative, sensitive, and love expressing emotions.";
-      } else {
-        personality = "You have a unique blend of traits. You're balanced and adaptive.";
-      }
+    let step = 0;
+    const answers = [];
 
-      document.getElementById("result").innerText = personality;
+    function renderStep() {
+      document.getElementById('question').innerText = questions[step].q;
+      const choices = document.getElementById('choices');
+      choices.innerHTML = "";
+
+      questions[step].options.forEach(option => {
+        const btn = document.createElement("button");
+        btn.innerText = option;
+        btn.onclick = () => {
+          answers.push(option);
+          step++;
+          if (step < questions.length) {
+            renderStep();
+          } else {
+            showResult();
+          }
+        };
+        choices.appendChild(btn);
+      });
     }
-  </script>
 
+    function showResult() {
+      document.getElementById('question').innerText = "Your result:";
+      document.getElementById('choices').innerHTML = "";
+      const key = answers.join("|");
+      const result = dataProfiles[key] || "You're unique, undefined by simple answers.";
+      document.getElementById('result').innerText = result;
+    }
+
+    renderStep();
+  </script>
 </body>
 </html>
